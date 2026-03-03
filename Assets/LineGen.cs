@@ -9,8 +9,6 @@ public class LineGen : MonoBehaviour
     public float cubeSize;
     public Vector2 cubePos;
     
-    //public Vector2 cubePos2;
-    public float zPos2;
     public float zPos;
     public float zRot = 0;
 
@@ -33,151 +31,24 @@ public class LineGen : MonoBehaviour
 
         GL.Begin(GL.LINES);
         material.SetPass(0);
-        
-
-        //var frontSquare = GetCube(cubePos);
-        //var frontZ = PerspectiveCamera.Instance.GetPerspective(zPos + cubeSize * .5f);
-        //var backSquare = GetCube(cubePos);
-        //var backZ = PerspectiveCamera.Instance.GetPerspective(zPos - cubeSize * .5f);
-
-        //var cubeDimensions1 = new CubeDimensions()
-        //{
-        //    minX = -1 * cubeSize + cubePos.x,
-        //    minY = -1 * cubeSize + cubePos.y,
-        //    minZ = -1 * cubeSize + zPos,
-        //    maxX = 1 * cubeSize + cubePos.x,
-        //    maxY = 1 * cubeSize + cubePos.y,
-         //   maxZ = 1 * cubeSize + zPos,
-        //};
-        
-        //var frontSquare2 = GetCube(cubePos2);
-        //var frontZ2 = PerspectiveCamera.Instance.GetPerspective(zPos2 + cubeSize * .5f);
-        //var backSquare2 = GetCube(cubePos2);
-        //var backZ2 = PerspectiveCamera.Instance.GetPerspective(zPos2 - cubeSize * .5f);
-
-        //var cubeDimensions2 = new CubeDimensions()
-        //{
-        //    minX = -1 * cubeSize + cubePos2.x,
-        //    minY = -1 * cubeSize + cubePos2.y,
-        //    minZ = -1 * cubeSize + zPos2,
-        //    maxX = 1 * cubeSize + cubePos2.x,
-        //    maxY = 1 * cubeSize + cubePos2.y,
-        //    maxZ = 1 * cubeSize + zPos2,
-        //};
-        
-
-        //RotationalMatrixComputation(ref frontSquare);
-        //RotationalMatrixComputation(ref backSquare);
-        
-        //var computedFront = RenderSquare(frontSquare, frontZ);
-        //var computedBack = RenderSquare(backSquare, backZ);
-
-        //var computedFront2 = RenderSquare(frontSquare2, frontZ2);
-        //var computedBack2 = RenderSquare(backSquare2, backZ2);
-
-        //for (int i = 0; i < 4; i++)
-        //{
-        //    GL.Vertex(computedFront[i]);
-        //    GL.Vertex(computedBack[i]);
-        //    GL.Vertex(computedFront2[i]);
-        //    GL.Vertex(computedBack2[i]);
-        //}
-
-        //Debug.Log(cubeDimensions1.Collide(cubeDimensions2) ? "Hit" : "No Hit");
 
         DrawSphere(cubePos, zPos, sphereRadius);
-        //DrawSphere(cubePos2, zPos2, sphereRadius);
 
 
         GL.End();
         GL.PopMatrix();
     }
 
-    /*
-    public Vector2[] GetCube(Vector2 pos)
-    {
-        var faceArray = new Vector2[]
-        {
-            new Vector2 (1, 1f),
-            new Vector2 (-1f, 1f),
-            new Vector2 (-1f, -1f),
-            new Vector2 (1f, -1f),
-        };
-
-        for(var i = 0; i < faceArray.Length; i++)
-        {
-            faceArray[i] = new Vector2(pos.x + faceArray[i].x, pos.y + faceArray[i].y) * cubeSize;
-        }
-
-        return faceArray;
-        
-    }
-
-    private Vector2[] RenderSquare(Vector2[] squareElements, float perspective)
-    {
-        var computedSquare = new Vector2[squareElements.Length];
-        for(var i = 0; i < squareElements.Length; i++)
-        {
-            computedSquare[i] = squareElements[i] * perspective;
-            GL.Vertex(squareElements[i] * perspective);
-            GL.Vertex(squareElements[(i + 1) % squareElements.Length] * perspective);
-        }
-        return computedSquare;
-    }
-
-    private void RotationalMatrixComputation(ref Vector2[] squareElements)
-    {
-        var convertedRadians = zRot * Mathf.Deg2Rad;
-        for (var i = 0; i < squareElements.Length; i++)
-        {
-            squareElements[i] = new Vector2(squareElements[i].x * Mathf.Cos(convertedRadians) - squareElements[i].y * Mathf.Sin(convertedRadians), 
-                squareElements[i].y * Mathf.Cos(convertedRadians) + squareElements[i].x * Mathf.Sin(convertedRadians));
-        }
-    }
-
-    
-    public struct CubeDimensions
-    {
-        public float minX;
-        public float minY;
-        public float minZ;
-        
-        public float maxX;
-        public float maxY;
-        public float maxZ;
-
-        public bool Collide(CubeDimensions otherCube)
-        {
-            bool overlapX = (minX <= otherCube.maxX && maxX >= otherCube.minX);
-            bool overlapY = (minY <= otherCube.maxY && maxY >= otherCube.minY);
-            bool overlapZ = (minZ <= otherCube.maxZ && maxZ >= otherCube.minZ);
-            
-            return overlapX && overlapY && overlapZ;
-        } 
-    }
-
-    public struct Circle
-    {
-        Vector3 Pos;
-        float radius;
-
-        public bool Collides(CubeDimensions cube)
-        {
-            //Clamp pos X w/ minX and maxX
-            //Clamp pos Y w/ minY and maxY
-            //Clamp pos Z w/ minZ and MaxZ
-            //Vector 3 compare radius and the length of the new point
-            return true;
-        }
-    }
-    */
+ 
 
     public void DrawSphere(Vector2 center, float zPos, float radius)
     {
         float frontZ = PerspectiveCamera.Instance.GetPerspective(zPos);
+
         DrawCircle(center, frontZ, radius);
         DrawCircleVertical(center, frontZ, radius);
         DrawCircleDepth(center, zPos, radius);
+        DrawSphereLongitudes(center, zPos, radius);
     }
 
     public void DrawCircle(Vector2 center, float perspective, float radius)
@@ -203,39 +74,107 @@ public class LineGen : MonoBehaviour
     {
         float step = Mathf.PI * 2f / sphereSegments;
 
+    for (int i = 0; i < sphereSegments; i++)
+    {
+        float a0 = step * i;
+        float a1 = step * (i + 1);
+
+        Vector2 p0 = new Vector2(Mathf.Cos(a0) * radius, Mathf.Sin(a0) * radius) + center;
+        Vector2 p1 = new Vector2(Mathf.Cos(a1) * radius, Mathf.Sin(a1) * radius) + center;
+
+        GL.Vertex(p0 * perspective);
+        GL.Vertex(p1 * perspective);
+    }
+    }
+
+    public void DrawCircleDepth(Vector2 center, float zPos, float radius)
+    {
+        // int rings = 15;
+
+        // for (int r = 1; r <= sphereSegments; r++)
+        // {
+        //     float t = (float)r / (rings + 1);
+        //     float zOffset = Mathf.Lerp(-radius, radius, t);
+        //     float ringRadius = Mathf.Sqrt(radius * radius - zOffset * zOffset);
+
+        //     float perspective = PerspectiveCamera.Instance.GetPerspective(zPos + zOffset);
+        //     DrawCircle(center, perspective, ringRadius);
+
+        // }
+
+        int rings = 10;
+
+        for (int r = 1; r <= rings; r++)
+        {
+            float t = (float)r / (rings + 1);
+
+            // vertical position on sphere
+            float yOffset = Mathf.Lerp(-radius, radius, t);
+
+            // correct shrinking toward poles
+            float ringRadius = Mathf.Sqrt(radius * radius - yOffset * yOffset);
+
+            DrawHorizontalRing(center, zPos, ringRadius, yOffset);
+        }
+    }
+
+    public void DrawSphereLongitudes(Vector2 center, float zPos, float radius)
+    {
+        int meridians = 10; 
+
+        for (int m = 0; m < meridians; m++)
+        {
+            float angle = (Mathf.PI * 2f / meridians) * m;
+
+            float step = Mathf.PI * 2f / sphereSegments;
+
+            for (int i = 0; i < sphereSegments; i++)
+            {
+                float a0 = step * i;
+                float a1 = step * (i + 1);
+
+                float x0 = Mathf.Cos(angle) * Mathf.Cos(a0) * radius;
+                float y0 = Mathf.Sin(a0) * radius;
+                float z0 = Mathf.Sin(angle) * Mathf.Cos(a0) * radius;
+
+                float x1 = Mathf.Cos(angle) * Mathf.Cos(a1) * radius;
+                float y1 = Mathf.Sin(a1) * radius;
+                float z1 = Mathf.Sin(angle) * Mathf.Cos(a1) * radius;
+
+                float p0 = PerspectiveCamera.Instance.GetPerspective(zPos + z0);
+                float p1 = PerspectiveCamera.Instance.GetPerspective(zPos + z1);
+
+                GL.Vertex((new Vector2(x0, y0) + center) * p0);
+                GL.Vertex((new Vector2(x1, y1) + center) * p1);
+            }
+        }
+    }
+
+    public void DrawHorizontalRing(Vector2 center, float zPos, float baseRadius, float yOffset)
+    {
+        float step = Mathf.PI * 2f / sphereSegments;
+
         for (int i = 0; i < sphereSegments; i++)
         {
             float a0 = step * i;
             float a1 = step * (i + 1);
 
-            Vector2 p0 = new Vector2(0, Mathf.Sin(a0)) * radius + center;
-            Vector2 p1 = new Vector2(0, Mathf.Sin(a1)) * radius + center;
+            // true sphere math
+            float x0 = Mathf.Cos(a0) * baseRadius;
+            float z0 = Mathf.Sin(a0) * baseRadius;
 
-            GL.Vertex(p0 * perspective);
-            GL.Vertex(p1 * perspective);
+            float x1 = Mathf.Cos(a1) * baseRadius;
+            float z1 = Mathf.Sin(a1) * baseRadius;
+
+            float p0 = PerspectiveCamera.Instance.GetPerspective(zPos + z0);
+            float p1 = PerspectiveCamera.Instance.GetPerspective(zPos + z1);
+
+            Vector2 v0 = new Vector2(x0, yOffset) + center;
+            Vector2 v1 = new Vector2(x1, yOffset) + center;
+
+            GL.Vertex(v0 * p0);
+            GL.Vertex(v1 * p1);
         }
     }
-
-    public void DrawCircleDepth(Vector2 center, float zPos, float radius)
-    {
-        int rings = 15;
-
-        for (int r = 1; r <= sphereSegments; r++)
-        {
-            float t = (float)r / (rings + 1);
-            float zOffset = Mathf.Lerp(-radius, radius, t);
-            float ringRadius = Mathf.Sqrt(radius * radius - zOffset * zOffset);
-
-            float perspective = PerspectiveCamera.Instance.GetPerspective(zPos + zOffset);
-            DrawCircle(center, perspective, ringRadius);
-
-        }
-    }
-
-    public void DrawCircleLat(Vector2 center, float perspective, float radius)
-    {
-
-    }
-
 }
 

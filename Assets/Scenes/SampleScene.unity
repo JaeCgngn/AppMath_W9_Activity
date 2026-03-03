@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
+  - component: {fileID: 519420035}
   - component: {fileID: 519420033}
   - component: {fileID: 519420034}
   m_Layer: 0
@@ -220,6 +221,9 @@ MonoBehaviour:
   cubeSize: 5
   cubePos: {x: 0, y: 0}
   zPos: 0
+  zRot: 0
+  sphereRadius: 1
+  sphereSegments: 10
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,6 +237,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   focalLength: 5
+--- !u!114 &519420035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09f5362a479cd7749b925db16767b812, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Cube
+  material: {fileID: 2100000, guid: bf1bd287f3cadf94a9b8a49b5bd8b100, type: 2}
+  cubeSize: 0
+  cubePos: {x: 0, y: 0}
+  cubePos2: {x: 0, y: 0}
+  zPos2: 0
+  zPos: 0
+  zRot: 0
+  sphereRadius: 1
+  sphereSegments: 10
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
