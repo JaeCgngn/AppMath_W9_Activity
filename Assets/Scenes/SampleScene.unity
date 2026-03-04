@@ -131,6 +131,8 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420035}
   - component: {fileID: 519420033}
+  - component: {fileID: 519420036}
+  - component: {fileID: 519420037}
   - component: {fileID: 519420034}
   m_Layer: 0
   m_Name: Main Camera
@@ -252,12 +254,47 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: bf1bd287f3cadf94a9b8a49b5bd8b100, type: 2}
   cubeSize: 0
   cubePos: {x: 0, y: 0}
-  cubePos2: {x: 0, y: 0}
-  zPos2: 0
   zPos: 0
   zRot: 0
-  sphereRadius: 1
-  sphereSegments: 10
+--- !u!114 &519420036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a45d7f764512daa459d41ba9a145ba60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pyramid
+  material: {fileID: 2100000, guid: bf1bd287f3cadf94a9b8a49b5bd8b100, type: 2}
+  pyramidPos: {x: 0, y: 0}
+  pyramidPos2: {x: 0, y: 0}
+  zPos: 0
+  zPos2: 0
+  baseSize: 2
+  height: 2.5
+--- !u!114 &519420037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23f4603daeda9d84cbba396e209e4c09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Capsule
+  material: {fileID: 2100000, guid: bf1bd287f3cadf94a9b8a49b5bd8b100, type: 2}
+  capsulePos: {x: 0, y: 0}
+  zPos: 0
+  radius: 0.5
+  height: 3
+  segments: 24
+  horizontalRings: 3
+  verticalRings: 4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
