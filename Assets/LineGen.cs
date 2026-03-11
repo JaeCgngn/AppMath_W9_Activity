@@ -15,6 +15,11 @@ public class LineGen : MonoBehaviour
     public float sphereRadius = 1f;
     public int sphereSegments = 10;
 
+
+    void Update()
+    {
+        zRot += Time.deltaTime;
+    }
     private void OnPostRender()
     {
         DrawLine();
@@ -74,17 +79,17 @@ public class LineGen : MonoBehaviour
     {
         float step = Mathf.PI * 2f / sphereSegments;
 
-    for (int i = 0; i < sphereSegments; i++)
-    {
-        float a0 = step * i;
-        float a1 = step * (i + 1);
+        for (int i = 0; i < sphereSegments; i++)
+        {
+            float a0 = step * i;
+            float a1 = step * (i + 1);
 
-        Vector2 p0 = new Vector2(Mathf.Cos(a0) * radius, Mathf.Sin(a0) * radius) + center;
-        Vector2 p1 = new Vector2(Mathf.Cos(a1) * radius, Mathf.Sin(a1) * radius) + center;
+            Vector2 p0 = new Vector2(Mathf.Cos(a0) * radius, Mathf.Sin(a0) * radius) + center;
+            Vector2 p1 = new Vector2(Mathf.Cos(a1) * radius, Mathf.Sin(a1) * radius) + center;
 
-        GL.Vertex(p0 * perspective);
-        GL.Vertex(p1 * perspective);
-    }
+            GL.Vertex(p0 * perspective);
+            GL.Vertex(p1 * perspective);
+        }
     }
 
     public void DrawCircleDepth(Vector2 center, float zPos, float radius)
@@ -141,11 +146,14 @@ public class LineGen : MonoBehaviour
                 float y1 = Mathf.Sin(a1) * radius;
                 float z1 = Mathf.Sin(angle) * Mathf.Cos(a1) * radius;
 
-                float p0 = PerspectiveCamera.Instance.GetPerspective(zPos + z0);
-                float p1 = PerspectiveCamera.Instance.GetPerspective(zPos + z1);
+                Vector3 r0 = RotateY(x0, y0, z0, zRot);
+                Vector3 r1 = RotateY(x1, y1, z1, zRot);
 
-                GL.Vertex((new Vector2(x0, y0) + center) * p0);
-                GL.Vertex((new Vector2(x1, y1) + center) * p1);
+                float p0 = PerspectiveCamera.Instance.GetPerspective(zPos + r0.Z);
+                float p1 = PerspectiveCamera.Instance.GetPerspective(zPos + r1.Z);
+
+                GL.Vertex((new Vector2(r0.X, r0.Y) + center) * p0);
+                GL.Vertex((new Vector2(r1.X, r1.Y) + center) * p1);
             }
         }
     }
@@ -166,15 +174,31 @@ public class LineGen : MonoBehaviour
             float x1 = Mathf.Cos(a1) * baseRadius;
             float z1 = Mathf.Sin(a1) * baseRadius;
 
-            float p0 = PerspectiveCamera.Instance.GetPerspective(zPos + z0);
-            float p1 = PerspectiveCamera.Instance.GetPerspective(zPos + z1);
+            Vector3 r0 = RotateY(x0, yOffset, z0, zRot);
+            Vector3 r1 = RotateY(x1, yOffset, z1, zRot);
 
-            Vector2 v0 = new Vector2(x0, yOffset) + center;
-            Vector2 v1 = new Vector2(x1, yOffset) + center;
+            float p0 = PerspectiveCamera.Instance.GetPerspective(zPos + r0.Z);
+            float p1 = PerspectiveCamera.Instance.GetPerspective(zPos + r1.Z);
+
+            Vector2 v0 = new Vector2(r0.X, r0.Y) + center;
+            Vector2 v1 = new Vector2(r1.X, r1.Y) + center;
 
             GL.Vertex(v0 * p0);
             GL.Vertex(v1 * p1);
         }
     }
+
+    Vector3 RotateY(float x, float y, float z, float angle)
+    {
+        float cos = Mathf.Cos(angle);
+        float sin = Mathf.Sin(angle);
+
+        float rx = x * cos - z * sin;
+        float rz = x * sin + z * cos;
+
+        return new Vector3(rx, y, rz);
+    }
+
+
 }
 
