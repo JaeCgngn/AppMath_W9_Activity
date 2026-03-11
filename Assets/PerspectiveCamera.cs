@@ -11,10 +11,10 @@ public class PerspectiveCamera : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(this);
+            // DontDestroyOnLoad(this);
         }
-        else
-            Destroy(this);
+        // else
+        //     Destroy(this);
     }
 
     public float GetPerspective(float zPos)
