@@ -237,6 +237,7 @@ MonoBehaviour:
   grounded: 0
   platformY: 0
   cubeMaterial: {fileID: 2100000, guid: ee33147d7b8ece543b3750e908ecbd1a, type: 2}
+  world: {fileID: 519420036}
 --- !u!114 &519420036
 MonoBehaviour:
   m_ObjectHideFlags: 0

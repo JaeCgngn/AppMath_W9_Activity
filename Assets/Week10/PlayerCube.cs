@@ -19,6 +19,8 @@ public class PlayerCube : MonoBehaviour
 
     public Material cubeMaterial;
 
+    public WorldRend world;
+
     void Update()
     {
         Move();
@@ -67,13 +69,29 @@ public class PlayerCube : MonoBehaviour
 
     void CheckSphereCollision()
     {
-        Vector3 spherePos = new Vector3(5, 1, 0);
+        // Vector3 playerPos = position;
+        // Vector3 spherePos = new Vector3(5, 1, 2);
 
-        float distance = Vector3.Distance(position, spherePos);
+        // float collisionRadius = 2f; 
+        // float dist = Vector3.Distance(playerPos, spherePos);
+        
 
-        if (distance < 1.2f)
+        // if(dist < collisionRadius)
+        // {
+        //     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // }
+
+        Vector3 spherePos = world.spherePos;
+
+        float sphereRadius = 1.5f;
+        float cubeRadius = 0.8f;
+
+        float dist = Vector3.Distance(position, spherePos);
+
+        if (dist < sphereRadius + cubeRadius)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+
     }
 }
